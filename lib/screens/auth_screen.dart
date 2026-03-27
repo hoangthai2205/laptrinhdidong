@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.food_bank, size: 60, color: Colors.green),
+                    const Icon(Icons.checkroom, size: 60, color: Colors.green),
                     const SizedBox(height: 10),
                     Text(isLogin ? "ĐĂNG NHẬP" : "ĐĂNG KÝ", style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 20),
