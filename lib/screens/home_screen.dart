@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: Image.network("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80", height: 180, width: double.infinity, fit: BoxFit.cover),
+                  child: Image.network("https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1000&auto=format&fit=crop", height: 180, width: double.infinity, fit: BoxFit.cover),
                 ),
                 const SizedBox(height: 20),
                 const Text("Danh mục phổ biến", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
