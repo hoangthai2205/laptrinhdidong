@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "35111375046",
+    "project_id": "appchay-28be9",
+    "storage_bucket": "appchay-28be9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35111375046:android:874a62f847f092a8dd47c7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlJMaUEFKC1my0wuAPJ6to69d-c0xptaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
