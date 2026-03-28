@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 import '../services/data_store.dart';
 import '../services/firebase_service.dart';
 import '../screens/auth_screen.dart';
@@ -17,28 +17,27 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  File? _avatar;
-
-  // 👉 Chọn ảnh
-  Future<void> pickAvatar() async {
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    if (picked != null) {
-      setState(() {
-        _avatar = File(picked.path);
-      });
-    }
+  Uint8List? _avatarBytes;
+  
+Future<void> pickAvatar() async {
+  final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+  if (picked != null) {
+    final bytes = await picked.readAsBytes();
+    setState(() {
+      _avatarBytes = bytes;
+    });
   }
+}
 
   // 👉 Upload ảnh lên Firebase Storage
-  Future<String?> uploadAvatar(File file, String userId) async {
+  Future<String?> uploadAvatar(Uint8List bytes, String userId) async {
     try {
       final ref = FirebaseStorage.instance
           .ref()
           .child('avatars')
           .child('$userId.jpg');
 
-      await ref.putFile(file);
+      await ref.putData(bytes);
       return await ref.getDownloadURL();
     } catch (e) {
       print("Upload lỗi: $e");
@@ -79,12 +78,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 40,
                       backgroundColor: Colors.green,
-                      backgroundImage: _avatar != null
-                          ? FileImage(_avatar!) as ImageProvider
+                      backgroundImage: _avatarBytes != null
+                          ? MemoryImage(_avatarBytes!) as ImageProvider
                           : (user.avatar.isNotEmpty
                               ? NetworkImage(user.avatar)
                               : null),
-                      child: (_avatar == null &&
+                      child: (_avatarBytes == null &&
                             user.avatar.isEmpty)
                           ? const Icon(Icons.camera_alt,
                               size: 30, color: Colors.white)
@@ -231,9 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                   String? avatarUrl;
 
-                  if (_avatar != null) {
+                  if (_avatarBytes != null) {
                     avatarUrl =
-                        await uploadAvatar(_avatar!, user.id);
+                        await uploadAvatar(_avatarBytes!, user.id);
                   }
 
                   await FirebaseFirestore.instance
@@ -252,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     user.address = newAddress;
                     if (avatarUrl != null) {
                       user.avatar = avatarUrl;
-                      _avatar = null;
+                      _avatarBytes = null;
                     }
                   });
 
